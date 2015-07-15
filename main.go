@@ -78,6 +78,7 @@ func main() {
 		WaterArea, _ := strconv.Atoi(row[12])
 		Population, _ := strconv.Atoi(row[13])
 		HousingUnits, _ := strconv.Atoi(row[14])
+		//This contains excess data but it's good to have and it gets garbage collected anyway
 		r := &Record{
 			SummaryLevel:        row[0],
 			GeographicComponent: row[1],
@@ -105,6 +106,7 @@ func main() {
 			}
 			continue
 		}
+		places[r.PlaceFIPS].LandArea += r.LandArea
 		places[r.PlaceFIPS].TotalHousing += r.HousingUnits
 		places[r.PlaceFIPS].TotalPopulation += r.Population
 		places[r.PlaceFIPS].PopulationDensity = float32(places[r.PlaceFIPS].TotalPopulation) / float32(places[r.PlaceFIPS].LandArea)
@@ -129,6 +131,9 @@ func main() {
 	fmt.Println("Analysis Complete")
 	for k, v := range places {
 		fmt.Println("Place: ", k, "----------->")
+		fmt.Println("Total Population: ", v.TotalPopulation)
+		fmt.Println("Total Housing: ", v.TotalHousing)
+		fmt.Println("Total LandArea: ", v.LandArea)
 		fmt.Println("Housing Density: ", v.HousingDensity)
 		fmt.Println("Population Density: ", v.PopulationDensity)
 	}
